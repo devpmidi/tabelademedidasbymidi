@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BY MIDI - Gerador Premium de Tabelas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a0a0a;
+            --gold: #d4af37;
+            --gold-light: #f4d77e;
+            --accent: #8b7355;
+            --bg: #ffffff;
+            --bg-dark: #0f0f0f;
+            --text: #1a1a1a;
+            --text-light: #6a6a6a;
+            --border: #e5e5e5;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-gold: linear-gradient(135deg, #d4af37 0%, #f4d77e 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--gradient-1);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--gradient-2);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 5s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: var(--gradient-gold);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-100px, 100px) scale(0.9); }
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(244, 215, 126, 0.15) 0%, transparent 50%);
+            animation: pulseGlow 8s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+            animation: heroFadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        @keyframes heroFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50px;
+            color: var(--gold);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            animation: heroFadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            line-height: 1;
+            animation: heroFadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
+            background: linear-gradient(135deg, #ffffff 0%, var(--gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            animation: heroFadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.6s both;
+            margin-bottom: 3rem;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem 3rem;
+            background: var(--gradient-gold);
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: heroFadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.8s both;
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 80px rgba(212, 175, 55, 0.5);
+        }
+
+        .hero-cta:hover::before {
+            left: 100%;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-15px); }
+            60% { transform: translateX(-50%) translateY(-8px); }
+        }
+
+        .scroll-line {
+            width: 2px;
+            height: 50px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            margin: 0 auto;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-label {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 50px;
+            color: var(--gold);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Controls Grid */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .control-card {
+            position: relative;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .control-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .control-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .control-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-gold);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        select {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            background: white;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='14' height='8' viewBox='0 0 14 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 7L13 1' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.5rem center;
+            padding-right: 3.5rem;
+        }
+
+        select:hover {
+            border-color: var(--gold);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1.2rem 3rem;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-gold);
+            color: var(--primary);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .btn-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Preview Container */
+        .preview-section {
+            margin-top: 5rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .preview-container {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-gold);
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .preview-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .preview-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: var(--gold);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .copy-button {
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-button:hover {
+            background: var(--gold);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .copy-button.copied {
+            background: #4caf50;
+            border-color: #4caf50;
+            color: white;
+        }
+
+        .preview-content {
+            min-height: 400px;
+            background: #fafafa;
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .preview-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+            color: var(--text-light);
+        }
+
+        .preview-placeholder-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .preview-placeholder-text {
+            font-size: 1.1rem;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        /* Enhanced Size Chart Cards */
+        .qv-sizechart-container {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding: 1rem 0;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold) transparent;
+        }
+
+        .qv-sizechart-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .qv-sizechart-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .qv-sizechart-container::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 4px;
+        }
+
+        .qv-sizechart-card {
+            flex: 0 0 auto;
+            width: 220px;
+            background: white;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .qv-sizechart-card:nth-child(1) { animation-delay: 0s; }
+        .qv-sizechart-card:nth-child(2) { animation-delay: 0.1s; }
+        .qv-sizechart-card:nth-child(3) { animation-delay: 0.2s; }
+        .qv-sizechart-card:nth-child(4) { animation-delay: 0.3s; }
+        .qv-sizechart-card:nth-child(5) { animation-delay: 0.4s; }
+
+        .qv-sizechart-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .qv-sizechart-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.25);
+            border-color: var(--gold);
+        }
+
+        .qv-sizechart-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .qv-sizechart-card h3 {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            margin: 0 0 1.5rem 0;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .qv-sizechart-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: var(--gradient-gold);
+        }
+
+        .qv-sizechart-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .qv-sizechart-row:last-child {
+            border-bottom: none;
+        }
+
+        .qv-sizechart-row:hover {
+            background: rgba(212, 175, 55, 0.05);
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            border-radius: 8px;
+        }
+
+        .qv-sizechart-label {
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .qv-sizechart-row span:last-child {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%);
+            color: white;
+            padding: 1.5rem 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            transform: translateX(400px);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .toast-message {
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.2);
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-top: 8rem;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-gold);
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-link:hover {
+            color: var(--gold);
+        }
+
+        .footer-copyright {
+            font-size: 0.85rem;
+            opacity: 0.5;
+            margin-top: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .container {
+                padding: 4rem 1.5rem;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .preview-container {
+                padding: 1.5rem;
+            }
+
+            .preview-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .qv-sizechart-card {
+                width: 180px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .toast {
+                right: 1rem;
+                left: 1rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(212, 175, 55, 0.1);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">Premium Edition</div>
+            <h1>BY MIDI</h1>
+            <p>Gerador Profissional de Tabelas de Medidas</p>
+            <button class="hero-cta" onclick="scrollToGenerator()">
+                <span>Começar Agora</span>
+                <span class="btn-icon">→</span>
+            </button>
+        </div>
+        <div class="scroll-indicator" onclick="scrollToGenerator()">
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Main Container -->
+    <div class="container" id="generator">
+        <!-- Section Header -->
+        <div class="section-header">
+            <div class="section-label">Configure</div>
+            <h2 class="section-title">Personalize Sua Tabela</h2>
+            <p class="section-subtitle">
+                Selecione a marca e categoria para gerar uma tabela de medidas profissional e interativa
+            </p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="statMarcas">13</div>
+                <div class="stat-label">Marcas Disponíveis</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statCategorias">0</div>
+                <div class="stat-label">Categorias</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statTamanhos">0</div>
+                <div class="stat-label">Tamanhos</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls-grid">
+            <div class="control-card glass-card">
+                <label class="control-label">
+                    <span class="control-icon">M</span>
+                    Marca
+                </label>
+                <div class="select-wrapper">
+                    <select id="marcaSelect">
+                        <option value="">Selecione uma marca</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-card glass-card">
+                <label class="control-label">
+                    <span class="control-icon">C</span>
+                    Categoria
+                </label>
+                <div class="select-wrapper">
+                    <select id="categoriaSelect">
+                        <option value="">Todas as categorias</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="gerarHTML()">
+                <span>Gerar Tabela</span>
+            </button>
+            <button class="btn btn-secondary" onclick="copiarHTML()">
+                <span>Copiar HTML</span>
+            </button>
+        </div>
+
+        <!-- Preview Section -->
+        <div class="preview-section">
+            <div class="preview-container">
+                <div class="preview-header">
+                    <h3 class="preview-title">
+                        Preview
+                        <span class="preview-badge" id="previewBadge">Aguardando</span>
+                    </h3>
+                    <button class="copy-button" onclick="copiarHTML()" id="copyBtn">
+                        <span>Copiar</span>
+                    </button>
+                </div>
+                
+                <div class="preview-content" id="previewContent">
+                    <div class="preview-placeholder">
+                        <div class="preview-placeholder-icon">+</div>
+                        <p class="preview-placeholder-text">
+                            Selecione uma marca e clique em "Gerar Tabela" para visualizar sua tabela personalizada
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">BY MIDI</div>
+            <p class="footer-text">
+                Gerador profissional de tabelas de medidas com design premium e tecnologia de ponta
+            </p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Sobre</a>
+                <a href="#" class="footer-link">Suporte</a>
+                <a href="#" class="footer-link">Contato</a>
+            </div>
+            <p class="footer-copyright">© 2025 BY MIDI - Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-icon">✓</div>
+        <div class="toast-message">HTML copiado com sucesso!</div>
+    </div>
+
+    <script>
+        // Dados da planilha embutidos
+        const PLANILHA_DATA = {"Lekazis":[{"Categoria":"Saia","Tamanho":"PP","Cintura":"71-73","Busto":null,"Quadril":"96-98"},{"Categoria":"Saia","Tamanho":"P","Cintura":"75-77","Busto":null,"Quadril":"100-102"},{"Categoria":"Saia","Tamanho":"M","Cintura":"81-83","Busto":null,"Quadril":"106-108"},{"Categoria":"Saia","Tamanho":"G","Cintura":"87-89","Busto":null,"Quadril":"112-114"},{"Categoria":"Saia","Tamanho":"GG","Cintura":"93-95","Busto":null,"Quadril":"118-120"},{"Categoria":"Saia","Tamanho":"XG","Cintura":"99-101","Busto":null,"Quadril":"124-126"},{"Categoria":"Vestido","Tamanho":"PP","Cintura":"71-73","Busto":"87–89","Quadril":"96-98"},{"Categoria":"Vestido","Tamanho":"P","Cintura":"75-77","Busto":"91–93","Quadril":"100-102"},{"Categoria":"Vestido","Tamanho":"M","Cintura":"81-83","Busto":"97–99","Quadril":"106-108"},{"Categoria":"Vestido","Tamanho":"G","Cintura":"87-89","Busto":"103–105","Quadril":"112-114"},{"Categoria":"Vestido","Tamanho":"GG","Cintura":"93-95","Busto":"109–111","Quadril":"118-120"},{"Categoria":"Vestido","Tamanho":"XG","Cintura":"99-101","Busto":"115–117","Quadril":"124-126"}],"Jany Pim":[{"Tamanhos":36,"Busto":"84 - 88","Costas":"36 - 38","Cintura":"72 - 76"},{"Tamanhos":38,"Busto":"88 - 92","Costas":"38 - 40","Cintura":"76 - 80"},{"Tamanhos":40,"Busto":"92 - 96","Costas":"40 - 42","Cintura":"80 - 84"},{"Tamanhos":42,"Busto":"96 - 100","Costas":"42 - 44","Cintura":"84 - 90"},{"Tamanhos":44,"Busto":"100 - 106","Costas":"44 - 46","Cintura":"90 - 94"},{"Tamanhos":46,"Busto":"106 - 112","Costas":"46 - 48","Cintura":"94 - 102"},{"Tamanhos":48,"Busto":"112 - 118","Costas":"48 - 50","Cintura":"102 - 108"}],"Linda de Morrer":[],"Luzia Fazzolli":[{"Tamanhos":36,"Busto":"86–90","Cintura":"68–72","Quadril":"96–100"},{"Tamanhos":38,"Busto":"90–94","Cintura":"72–76","Quadril":"100–104"},{"Tamanhos":40,"Busto":"95–99","Cintura":"77–81","Quadril":"105–109"},{"Tamanhos":42,"Busto":"100–104","Cintura":"82–86","Quadril":"110–114"},{"Tamanhos":44,"Busto":"106–110","Cintura":"88–92","Quadril":"116–120"},{"Tamanhos":46,"Busto":"112–116","Cintura":"94–98","Quadril":"122–126"}],"Hapuk":[{"Tamanhos":"XPP","Busto":"77 - 83","Cintura":"55 - 61","Quadril":"85 - 91"},{"Tamanhos":"PP","Busto":"83 - 89","Cintura":"61 - 67","Quadril":"91 - 97"},{"Tamanhos":"P","Busto":"89 - 95","Cintura":"67 - 73","Quadril":"97 - 103"},{"Tamanhos":"M","Busto":"95 - 101","Cintura":"73 - 79","Quadril":"103 - 109"},{"Tamanhos":"G","Busto":"101 - 107","Cintura":"79 - 85","Quadril":"109 - 115"},{"Tamanhos":"GG","Busto":"107 - 113","Cintura":"85 - 91","Quadril":"115 - 121"},{"Tamanhos":"GG+","Busto":"113 - 119","Cintura":"91 - 97","Quadril":"121 - 127"},{"Tamanhos":"G1","Busto":"119 - 125","Cintura":"97 - 103","Quadril":"127 - 133"},{"Tamanhos":"G2","Busto":"125 - 131","Cintura":"103 - 109","Quadril":"133 - 139"},{"Tamanhos":"G3","Busto":"131 - 137","Cintura":"109 - 115","Quadril":"139 - 145"}],"Doce Trama":[{"Categoria":"Macacão","Tamanho":"PP","Cintura":"60 - 64","Busto":"80 - 84","Quadril":"90 - 94"},{"Categoria":"Macacão","Tamanho":"P","Cintura":"64 - 70","Busto":"84 - 90","Quadril":"94 - 100"},{"Categoria":"Macacão","Tamanho":"M","Cintura":"70 - 76","Busto":"90 - 96","Quadril":"100 - 106"},{"Categoria":"Macacão","Tamanho":"G","Cintura":"76 - 82","Busto":"96 - 102","Quadril":"106 - 112"},{"Categoria":"Macacão","Tamanho":"GG","Cintura":"82 - 88","Busto":"102 - 108","Quadril":"112 - 118"},{"Categoria":"Vestidos_Blusa","Tamanho":"PP","Cintura":"60 - 64","Busto":"80 - 84","Quadril":null},{"Categoria":"Vestidos_Blusa","Tamanho":"P","Cintura":"64 - 70","Busto":"84 - 90","Quadril":null},{"Categoria":"Vestidos_Blusa","Tamanho":"M","Cintura":"70 - 76","Busto":"90 - 96","Quadril":null},{"Categoria":"Vestidos_Blusa","Tamanho":"G","Cintura":"76 - 82","Busto":"96 - 102","Quadril":null},{"Categoria":"Vestidos_Blusa","Tamanho":"GG","Cintura":"82 - 88","Busto":"102 - 108","Quadril":null}],"Doce Maria":[{"Tamanho":"PP","Busto":"91–93","Cintura":"68–70","Quadril":"95–97"},{"Tamanho":"P","Busto":"95–97","Cintura":"72–74","Quadril":"99–101"},{"Tamanho":"M","Busto":"100–102","Cintura":"77–79","Quadril":"104–106"},{"Tamanho":"G","Busto":"105–107","Cintura":"82–84","Quadril":"109–111"},{"Tamanho":"GG","Busto":"110–112","Cintura":"87–89","Quadril":"114–116"}],"Artsy":[{"Tamanho":"P","Busto":"94 - 96","Cintura":"73 - 75","Quadril":"97 - 99"},{"Tamanho":"M","Busto":"100 - 102","Cintura":"79 - 81","Quadril":"103 - 105"},{"Tamanho":"G","Busto":"106 - 108","Cintura":"85 - 87","Quadril":"109 - 111"},{"Tamanho":"GG","Busto":"112 - 114","Cintura":"91 - 93","Quadril":"115 - 117"}],"Puro Sharmy":[{"Tamanho":"PP/36","Busto":"86–90","Cintura":"63–67","Quadril":"93–97"},{"Tamanho":"P/38","Busto":"90–94","Cintura":"68–72","Quadril":"98–102"},{"Tamanho":"M/40","Busto":"94–98","Cintura":"73–77","Quadril":"103–107"},{"Tamanho":"G/42","Busto":"99–103","Cintura":"78–82","Quadril":"108–112"},{"Tamanho":"GG/44","Busto":"105–113","Cintura":"84–92","Quadril":"114–122"},{"Tamanho":"XG/46","Busto":"115–119","Cintura":"94–98","Quadril":"124–128"},{"Tamanho":"XGG/48","Busto":"125–129","Cintura":"102–106","Quadril":"132–136"}],"Via Tolentino":[{"Tamanho":34,"Busto":"85-88","Cintura":"65-68","Quadril":"91-94"},{"Tamanho":36,"Busto":"89-92","Cintura":"69-72","Quadril":"95-98"},{"Tamanho":38,"Busto":"93-96","Cintura":"73-76","Quadril":"99-102"},{"Tamanho":40,"Busto":"97-100","Cintura":"77-80","Quadril":"103-106"},{"Tamanho":42,"Busto":"101-104","Cintura":"81-84","Quadril":"107-110"},{"Tamanho":44,"Busto":"105-108","Cintura":"85-88","Quadril":"111-114"},{"Tamanho":46,"Busto":"109-112","Cintura":"89-92","Quadril":"115-118"},{"Tamanho":48,"Busto":"113-116","Cintura":"93-96","Quadril":"119-122"}],"Fascinius":[{"Tamanho":"PP","Busto":"95–97","Cintura":"71–73","Quadril":"98–100"},{"Tamanho":"P","Busto":"101–103","Cintura":"77–79","Quadril":"104–106"},{"Tamanho":"M","Busto":"107–109","Cintura":"83–85","Quadril":"110–112"},{"Tamanho":"G","Busto":"113–115","Cintura":"89–91","Quadril":"116–118"},{"Tamanho":"GG","Busto":"119–121","Cintura":"95–97","Quadril":"122–124"},{"Tamanho":"G1","Busto":"123–125","Cintura":"99–101","Quadril":"128–130"}],"Laura Rosa":[{"Tamanho":"PP","Busto":"88–92","Cintura":"68–72","Quadril":"94–98"},{"Tamanho":"P","Busto":"92–96","Cintura":"72–76","Quadril":"98–102"},{"Tamanho":"M","Busto":"97–103","Cintura":"77–83","Quadril":"103–109"},{"Tamanho":"G","Busto":"103–109","Cintura":"83–89","Quadril":"109–115"},{"Tamanho":"GG","Busto":"110–118","Cintura":"90–98","Quadril":"116–124"},{"Tamanho":"G1","Busto":"118–126","Cintura":"98–106","Quadril":"124–132"},{"Tamanho":"G2","Busto":"126–134","Cintura":"106–114","Quadril":"132–140"}],"Titanium":[{"Tamanho":"PP","Busto":"88–92","Cintura":"68–72","Quadril":"94–98"},{"Tamanho":"P","Busto":"92–96","Cintura":"72–76","Quadril":"98–102"},{"Tamanho":"M","Busto":"97–103","Cintura":"77–83","Quadril":"103–109"},{"Tamanho":"G","Busto":"103–109","Cintura":"83–89","Quadril":"109–115"},{"Tamanho":"GG","Busto":"110–118","Cintura":"90–98","Quadril":"116–124"},{"Tamanho":"G1","Busto":"118–126","Cintura":"98–106","Quadril":"124–132"},{"Tamanho":"G2","Busto":"126–134","Cintura":"106–114","Quadril":"132–140"}]};
+
+        // Mapeamento de tamanhos
+        const MAPEAMENTO_TAMANHOS = {
+            "XPP": "XPP/34", "PP": "PP/36", "P": "P/38", "M": "M/40",
+            "G": "G/42", "GG": "GG/44", "XG": "G1/46", "G1": "G1/46",
+            "XGG": "G2/48", "G2": "G2/48", "G3": "G3/50", "G4": "G4/52"
+        };
+
+        const MAPEAMENTO_HAPUK = {
+            "GG+": "G1/46", "G1": "G2/48", "G2": "G3/50",
+            "G3": "G4/52", "G4": "G5/54"
+        };
+
+        function ajustarTamanho(valor, marca) {
+            if (!valor) return "";
+            valor = String(valor).trim().toUpperCase();
+            if (marca && marca.toUpperCase().includes("HAPUK")) {
+                return MAPEAMENTO_HAPUK[valor] || MAPEAMENTO_TAMANHOS[valor] || valor;
+            }
+            return MAPEAMENTO_TAMANHOS[valor] || valor;
+        }
+
+        function scrollToGenerator() {
+            document.getElementById('generator').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function inicializar() {
+            const marcaSelect = document.getElementById('marcaSelect');
+            Object.keys(PLANILHA_DATA).forEach(marca => {
+                const option = document.createElement('option');
+                option.value = marca;
+                option.textContent = marca;
+                marcaSelect.appendChild(option);
+            });
+        }
+
+        function atualizarStats(categorias = 0, tamanhos = 0) {
+            document.getElementById('statCategorias').textContent = categorias;
+            document.getElementById('statTamanhos').textContent = tamanhos;
+        }
+
+        document.getElementById('marcaSelect').addEventListener('change', function() {
+            const marca = this.value;
+            const categoriaSelect = document.getElementById('categoriaSelect');
+            categoriaSelect.innerHTML = '<option value="">Todas as categorias</option>';
+            
+            if (!marca) {
+                atualizarStats(0, 0);
+                return;
+            }
+            
+            const data = PLANILHA_DATA[marca];
+            
+            if (data && data.length > 0 && data[0].hasOwnProperty('Categoria')) {
+                const categorias = [...new Set(data.map(row => row.Categoria).filter(c => c))];
+                categorias.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat;
+                    option.textContent = cat;
+                    categoriaSelect.appendChild(option);
+                });
+                atualizarStats(categorias.length, data.length);
+            } else {
+                atualizarStats(0, data.length);
+            }
+        });
+
+        function gerarHTML() {
+            const marca = document.getElementById('marcaSelect').value;
+            const categoria = document.getElementById('categoriaSelect').value;
+            
+            if (!marca) {
+                mostrarToast('⚠️ Por favor, selecione uma marca', 'warning');
+                return;
+            }
+            
+            let data = PLANILHA_DATA[marca];
+            
+            if (!data || data.length === 0) {
+                document.getElementById('previewContent').innerHTML = '<div class="preview-placeholder"><div class="preview-placeholder-icon">❌</div><p class="preview-placeholder-text">Nenhum dado disponível para esta marca.</p></div>';
+                return;
+            }
+            
+            if (categoria && data.length > 0 && data[0].hasOwnProperty('Categoria')) {
+                data = data.filter(row => row.Categoria === categoria);
+            }
+            
+            data = data.map(row => {
+                const { Categoria, ...rest } = row;
+                return rest;
+            });
+            
+            if (data.length === 0) {
+                document.getElementById('previewContent').innerHTML = '<div class="preview-placeholder"><div class="preview-placeholder-icon">❌</div><p class="preview-placeholder-text">Nenhum dado encontrado para esta seleção.</p></div>';
+                return;
+            }
+            
+            let html = `<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+    .qv-sizechart-container {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        padding: 10px;
+        white-space: nowrap;
+    }
+    .qv-sizechart-card {
+        flex: 0 0 auto;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 12px;
+        width: 160px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .qv-sizechart-card h3 {
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 15px;
+    }
+    .qv-sizechart-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+        background-color: #f7f7f7;
+        margin-bottom: 4px;
+        border-radius: 4px;
+        font-size: 13px;
+    }
+    .qv-sizechart-label { font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="qv-sizechart-container">`;
+
+            const columns = Object.keys(data[0]);
+            const tamanhoCol = columns[0];
+            const medidas = columns.slice(1);
+            
+            data.forEach(row => {
+                const tamanho = ajustarTamanho(row[tamanhoCol], marca);
+                html += `<div class="qv-sizechart-card"><h3>Tamanho ${tamanho}</h3>`;
+                
+                medidas.forEach(medida => {
+                    const valor = row[medida];
+                    if (valor !== undefined && valor !== null && valor !== '') {
+                        html += `<div class="qv-sizechart-row"><span class="qv-sizechart-label">${medida}</span><span>${valor}</span></div>`;
+                    }
+                });
+                
+                html += '</div>';
+            });
+
+            html += `
+</div>
+<p>* Valores em cm</p>
+</body>
+</html>`;
+            
+            const preview = document.getElementById('previewContent');
+            preview.innerHTML = '';
+            
+            const iframe = document.createElement('iframe');
+            iframe.style.width = '100%';
+            iframe.style.minHeight = '400px';
+            iframe.style.border = 'none';
+            iframe.style.borderRadius = '12px';
+            preview.appendChild(iframe);
+            
+            iframe.contentDocument.open();
+            iframe.contentDocument.write(html);
+            iframe.contentDocument.close();
+            
+            window.generatedHTML = html;
+            
+            document.getElementById('previewBadge').textContent = 'Gerado ✓';
+            document.getElementById('previewBadge').style.background = 'rgba(76, 175, 80, 0.1)';
+            document.getElementById('previewBadge').style.color = '#4caf50';
+            
+            mostrarToast('✨ Tabela gerada com sucesso!');
+        }
+
+        function copiarHTML() {
+            if (!window.generatedHTML) {
+                mostrarToast('⚠️ Gere uma tabela primeiro', 'warning');
+                return;
+            }
+            
+            navigator.clipboard.writeText(window.generatedHTML).then(() => {
+                const copyBtn = document.getElementById('copyBtn');
+                copyBtn.classList.add('copied');
+                copyBtn.innerHTML = '<span>✓</span><span>Copiado!</span>';
+                
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                    copyBtn.innerHTML = '<span>📋</span><span>Copiar</span>';
+                }, 3000);
+                
+                mostrarToast('✓ HTML copiado com sucesso!');
+            }).catch(err => {
+                mostrarToast('❌ Erro ao copiar', 'error');
+            });
+        }
+
+        function mostrarToast(mensagem, tipo = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = toast.querySelector('.toast-message');
+            toastMessage.textContent = mensagem;
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        window.addEventListener('load', inicializar);
+    </script>
+</body>
+</html>
